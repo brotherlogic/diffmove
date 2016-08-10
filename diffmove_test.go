@@ -10,6 +10,7 @@ var testdata = []struct {
 	end   []int
 }{
 	{[]int{1, 2, 3, 4, 5}, []int{2, 6, 3, 7, 4}},
+	{[]int{1, 2, 3}, []int{2, 1, 4}},
 }
 
 var deletedata = []struct {
@@ -42,7 +43,9 @@ func TestRemove(t *testing.T) {
 
 func TestDiffMove(t *testing.T) {
 	for _, test := range testdata {
+		log.Printf("---------")
 		moves := Diff(test.start, test.end)
+		log.Printf("TESTING")
 
 		current := make([]int, len(test.start))
 		copy(current, test.start)
