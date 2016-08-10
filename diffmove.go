@@ -4,10 +4,10 @@ import "log"
 
 // Move An addition, removal or move in an array
 type Move struct {
-	move  string
-	start int
-	end   int
-	new   int
+	Move  string
+	Start int
+	End   int
+	Value int
 }
 
 // Insert inserts a value into a slice
@@ -43,7 +43,7 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			moves = append(moves, Move{move: "Delete", start: i - removeCount})
+			moves = append(moves, Move{Move: "Delete", Start: i - removeCount})
 			newStart = Remove(newStart, i-removeCount)
 			removeCount++
 		}
@@ -60,7 +60,7 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			moves = append(moves, Move{move: "Add", start: i + addCount, new: end[i]})
+			moves = append(moves, Move{Move: "Add", Start: i + addCount, Value: end[i]})
 			newStart = Insert(newStart, i+addCount, end[i])
 			addCount++
 		}
@@ -72,7 +72,7 @@ func Diff(start []int, end []int) []Move {
 			for j := range end[i:] {
 				log.Printf("HERE = %v, %v -> %v (%v)", j, end[i:], i+j, end)
 				if newStart[i] == end[i+j] {
-					moves = append(moves, Move{move: "Move", start: i, end: i + j})
+					moves = append(moves, Move{Move: "Move", Start: i, End: i + j, Value: newStart[i]})
 					newStart = Remove(newStart, i+j)
 					newStart = Insert(newStart, i-1, end[i+j])
 				}
