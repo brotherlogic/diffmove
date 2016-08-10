@@ -12,7 +12,7 @@ type Move struct {
 
 // Insert inserts a value into a slice
 func Insert(slice []int, index, value int) []int {
-	log.Printf("INSERT: %v, %v, %v", slice, index, value)
+	log.Printf("Insert: %v @ %v into %v", value, index, slice)
 	slice = slice[0 : len(slice)+1]
 	copy(slice[index+1:], slice[index:])
 	slice[index] = value
@@ -70,11 +70,11 @@ func Diff(start []int, end []int) []Move {
 	for i := range end {
 		if end[i] != newStart[i] {
 			for j := range end[i:] {
-				log.Printf("HERE = %v, %v -> %v (%v)", j, end[i:], i+j, end)
 				if newStart[i] == end[i+j] {
+					log.Printf("Doing move of %v from %v to %v", newStart[i], i, i+j)
 					moves = append(moves, Move{Move: "Move", Start: i, End: i + j, Value: newStart[i]})
-					newStart = Remove(newStart, i+j)
-					newStart = Insert(newStart, i-1, end[i+j])
+					newStart = Remove(newStart, i)
+					newStart = Insert(newStart, i+j, end[i+j])
 				}
 			}
 		}
