@@ -43,7 +43,7 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			moves = append(moves, Move{Move: "Delete", Start: i - removeCount})
+			moves = append(moves, Move{Move: "Delete", Start: i - removeCount, Value: start[i-removeCount]})
 			newStart = Remove(newStart, i-removeCount)
 			removeCount++
 		}
