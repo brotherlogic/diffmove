@@ -48,18 +48,18 @@ func TestDiffMove(t *testing.T) {
 		copy(current, test.start)
 		for _, move := range moves {
 			log.Printf("%v now %v", current, move)
-			switch move.move {
+			switch move.Move {
 			case "Add":
-				current = Insert(current, move.start, move.new)
+				current = Insert(current, move.Start, move.Value)
 			case "Delete":
-				current = Remove(current, move.start)
+				current = Remove(current, move.Start)
 			case "Move":
-				val := current[move.start]
-				current = Remove(current, move.start)
-				if move.end > move.start {
-					current = Insert(current, move.end, val)
+				val := current[move.Start]
+				current = Remove(current, move.Start)
+				if move.End > move.Start {
+					current = Insert(current, move.End, val)
 				} else {
-					current = Insert(current, move.end, val)
+					current = Insert(current, move.End, val)
 				}
 			}
 		}
