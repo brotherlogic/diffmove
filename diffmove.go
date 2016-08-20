@@ -59,7 +59,7 @@ func Diff(start []int, end []int) []Move {
 			if i-removeCount > 0 {
 				move.StartPrior = start[i-removeCount-1]
 			}
-			if i-removeCount < len(start)-2 {
+			if i-removeCount < len(start)-1 {
 				move.StartFollow = start[i-removeCount+1]
 			}
 
@@ -82,10 +82,10 @@ func Diff(start []int, end []int) []Move {
 		if !found {
 			move := Move{Move: "Add", Start: i + addCount, Value: end[i]}
 			if i > 0 {
-				move.StartPrior = end[i-1]
+				move.StartPrior = newStart[i-1]
 			}
-			if i < len(end)-2 {
-				move.StartFollow = end[i+1]
+			if i < len(end)-1 {
+				move.StartFollow = newStart[i+1]
 			}
 			moves = append(moves, move)
 			newStart = Insert(newStart, i+addCount, end[i])
@@ -104,11 +104,18 @@ func Diff(start []int, end []int) []Move {
 						move.StartPrior = newStart[i-1]
 					}
 					if i < len(newStart)-2 {
-						move.StartPrior = newStart[i+1]
+						move.StartFollow = newStart[i+1]
 					}
-					moves = append(moves, move)
 					newStart = Remove(newStart, i)
 					newStart = Insert(newStart, i+j, end[i+j])
+
+					if (i + j) > 0 {
+						move.EndPrior = newStart[i+j-1]
+					}
+					if (i + j) < len(newStart)-1 {
+						move.EndFollow = newStart[i+j+1]
+					}
+					moves = append(moves, move)
 				}
 			}
 		}
