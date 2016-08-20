@@ -84,7 +84,7 @@ func Diff(start []int, end []int) []Move {
 			if i > 0 {
 				move.StartPrior = newStart[i-1]
 			}
-			if i < len(end)-1 {
+			if i < len(newStart)-1 {
 				move.StartFollow = newStart[i+1]
 			}
 			moves = append(moves, move)
