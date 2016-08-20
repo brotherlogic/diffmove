@@ -4,10 +4,14 @@ import "log"
 
 // Move An addition, removal or move in an array
 type Move struct {
-	Move  string
-	Start int
-	End   int
-	Value int
+	Move        string
+	StartPrior  int
+	Start       int
+	StartFollow int
+	EndPrior    int
+	End         int
+	EndFollow   int
+	Value       int
 }
 
 // Insert inserts a value into a slice
@@ -51,7 +55,15 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			moves = append(moves, Move{Move: "Delete", Start: i - removeCount, Value: start[i-removeCount]})
+			move := Move{Move: "Delete", Start: i - removeCount, Value: start[i-removeCount]}
+			if i-removeCount > 0 {
+				move.StartPrior = start[i-removeCount-1]
+			}
+			if i-removeCount < len(start)-2 {
+				move.StartFollow = start[i-removeCount+1]
+			}
+
+			moves = append(moves, move)
 			newStart = Remove(newStart, i-removeCount)
 			removeCount++
 		}
@@ -68,7 +80,14 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			moves = append(moves, Move{Move: "Add", Start: i + addCount, Value: end[i]})
+			move := Move{Move: "Add", Start: i + addCount, Value: end[i]}
+			if i > 0 {
+				move.StartPrior = end[i-1]
+			}
+			if i < len(end)-2 {
+				move.StartFollow = end[i+1]
+			}
+			moves = append(moves, move)
 			newStart = Insert(newStart, i+addCount, end[i])
 			addCount++
 		}
@@ -80,7 +99,14 @@ func Diff(start []int, end []int) []Move {
 			for j := range end[i:] {
 				if newStart[i] == end[i+j] {
 					log.Printf("Doing move of %v from %v to %v", newStart[i], i, i+j)
-					moves = append(moves, Move{Move: "Move", Start: i, End: i + j, Value: newStart[i]})
+					move := Move{Move: "Move", Start: i, End: i + j, Value: newStart[i]}
+					if i > 0 {
+						move.StartPrior = newStart[i-1]
+					}
+					if i < len(newStart)-2 {
+						move.StartPrior = newStart[i+1]
+					}
+					moves = append(moves, move)
 					newStart = Remove(newStart, i)
 					newStart = Insert(newStart, i+j, end[i+j])
 				}
