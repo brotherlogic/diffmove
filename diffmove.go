@@ -70,7 +70,6 @@ func Diff(start []int, end []int) []Move {
 	}
 
 	// Now do additions
-	addCount := 0
 	for i, endVal := range end {
 		found := false
 		for _, startVal := range start {
@@ -80,7 +79,7 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			move := Move{Move: "Add", Start: i + addCount, Value: end[i]}
+			move := Move{Move: "Add", Start: i, Value: end[i]}
 			if i > 0 {
 				move.StartPrior = newStart[i-1]
 			}
@@ -88,8 +87,7 @@ func Diff(start []int, end []int) []Move {
 				move.StartFollow = newStart[i+1]
 			}
 			moves = append(moves, move)
-			newStart = Insert(newStart, i+addCount, end[i])
-			addCount++
+			newStart = Insert(newStart, i, end[i])
 		}
 	}
 

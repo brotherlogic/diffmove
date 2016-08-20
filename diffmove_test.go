@@ -32,6 +32,19 @@ func TestFullInsert(t *testing.T) {
 	}
 }
 
+func TestEdgeInsert(t *testing.T) {
+	arr := make([]int, 10, 10)
+	arr = Insert(arr, 0, 5)
+	if arr[0] != 5 {
+		t.Errorf("Insert failed: %v", arr)
+	}
+
+	arr = Insert(arr, 11, 6)
+	if arr[len(arr)-1] != 6 {
+		t.Errorf("Second insert failed: %v", arr)
+	}
+}
+
 func TestRemove(t *testing.T) {
 	for _, test := range deletedata {
 		remEnd := Remove(test.start, test.delete)
