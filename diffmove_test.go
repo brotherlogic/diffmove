@@ -24,6 +24,14 @@ var deletedata = []struct {
 	{[]int{1, 2, 3, 4}, 3, []int{1, 2, 3}},
 }
 
+func TestFullInsert(t *testing.T) {
+	arr := make([]int, 10, 10)
+	arr = Insert(arr, 10, 5)
+	if len(arr) != 11 {
+		t.Errorf("Failed to extend array: %v (%v)", arr, len(arr))
+	}
+}
+
 func TestRemove(t *testing.T) {
 	for _, test := range deletedata {
 		remEnd := Remove(test.start, test.delete)

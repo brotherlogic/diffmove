@@ -13,6 +13,14 @@ type Move struct {
 // Insert inserts a value into a slice
 func Insert(slice []int, index, value int) []int {
 	log.Printf("Insert: %v @ %v into %v", value, index, slice)
+
+	//Guard against trying to insert into a full slice
+	if len(slice) == cap(slice) {
+		tmp := make([]int, len(slice), (cap(slice) + 1))
+		copy(tmp, slice)
+		slice = tmp
+	}
+
 	slice = slice[0 : len(slice)+1]
 	copy(slice[index+1:], slice[index:])
 	slice[index] = value
