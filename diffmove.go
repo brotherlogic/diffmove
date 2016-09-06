@@ -55,12 +55,12 @@ func Diff(start []int, end []int) []Move {
 		}
 
 		if !found {
-			move := Move{Move: "Delete", Start: i - removeCount, Value: start[i-removeCount]}
+			move := Move{Move: "Delete", Start: i - removeCount, Value: newStart[i-removeCount]}
 			if i-removeCount > 0 {
-				move.StartPrior = start[i-removeCount-1]
+				move.StartPrior = newStart[i-removeCount-1]
 			}
-			if i-removeCount < len(start)-1 {
-				move.StartFollow = start[i-removeCount+1]
+			if i-removeCount < len(start)-2 {
+				move.StartFollow = newStart[i-removeCount+1]
 			}
 
 			moves = append(moves, move)
