@@ -11,6 +11,8 @@ var testdata = []struct {
 }{
 	{[]int{1, 2, 3, 4, 5}, []int{2, 6, 3, 7, 4}},
 	{[]int{1, 2, 3}, []int{2, 1, 4}},
+	{[]int{1, 2, 3}, []int{3}},
+	{[]int{1, 2, 3, 4}, []int{1, 3, 2, 4}},
 }
 
 var deletedata = []struct {
@@ -59,6 +61,25 @@ func TestRemove(t *testing.T) {
 		if !match {
 			t.Errorf("Remove failed %v, %v -> %v (%v)", test.start, test.delete, remEnd, test.end)
 		}
+	}
+}
+
+func TestRemoveFromStart(t *testing.T) {
+	start := []int{1, 2, 3}
+	end := []int{3}
+
+	moves := Diff(start, end)
+
+	if len(moves) != 2 {
+		t.Errorf("Not Enough Moves!: %v", moves)
+	}
+
+	if moves[0].Value != 1 {
+		t.Errorf("First delete is wrong: %v", moves[0])
+	}
+
+	if moves[1].Value != 2 {
+		t.Errorf("Second delete is wrong: %v (%v)", moves[1], moves[1].Value)
 	}
 }
 
