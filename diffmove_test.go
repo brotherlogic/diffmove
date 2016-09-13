@@ -13,6 +13,20 @@ var testdata = []struct {
 	{[]int{1, 2, 3}, []int{2, 1, 4}},
 	{[]int{1, 2, 3}, []int{3}},
 	{[]int{1, 2, 3, 4}, []int{1, 3, 2, 4}},
+	{[]int{2, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15}, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}},
+}
+
+var testMoves = []struct {
+	start []int
+	end   []int
+	moves []Move
+}{
+	{[]int{2, 5, 7}, []int{1, 2, 3, 4, 5, 6, 7}, []Move{
+		Move{Move: "Add", Start: 0, Value: 1, StartFollow: 2},
+		Move{Move: "Add", Start: 2, Value: 3, StartPrior: 2, StartFollow: 5},
+		Move{Move: "Add", Start: 3, Value: 4, StartPrior: 3, StartFollow: 5},
+		Move{Move: "Add", Start: 5, Value: 6, StartPrior: 5, StartFollow: 7},
+	}},
 }
 
 var deletedata = []struct {
@@ -80,6 +94,22 @@ func TestRemoveFromStart(t *testing.T) {
 
 	if moves[1].Value != 2 {
 		t.Errorf("Second delete is wrong: %v (%v)", moves[1], moves[1].Value)
+	}
+}
+
+func TestGetMoves(t *testing.T) {
+	for _, test := range testMoves {
+		moves := Diff(test.start, test.end)
+		if len(moves) != len(test.moves) {
+			t.Errorf("Not enough moves %v (%v)", moves, test.moves)
+		} else {
+			for i, retMove := range moves {
+				if retMove != test.moves[i] {
+					t.Errorf("Mismatch in %v -> %v", test.start, test.end)
+					t.Errorf("Error is in move %v: %v (%v)", i, retMove, test.moves[i])
+				}
+			}
+		}
 	}
 }
 
