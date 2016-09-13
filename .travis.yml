@@ -17,4 +17,4 @@ before_install:
   
 script:
 - fgt golint
-- $HOME/gopath/bin/goveralls -service=travis-ci  github.com/brotherlogic/diffmove
+- $HOME/gopath/bin/goveralls -service=travis-ci -package github.com/brotherlogic/diffmove
